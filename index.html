@@ -2,17 +2,49 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Il Mio Archivio Digitale</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    
     <style>
-        body { font-family: sans-serif; line-height: 1.6; padding: 20px; max-width: 600px; margin: auto; }
-        h1 { color: #333; }
-        .link-box { background: #f4f4f4; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
+        body { text-align: center; background-color: #161b22; color: white; transition: 0.5s; }
+        .card {
+            background: #21262d;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px auto;
+            border: 1px solid #30363d;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        /* Animazione quando passi il dito/mouse sopra */
+        .card:hover {
+            transform: scale(1.05);
+            border-color: #58a6ff;
+        }
+        a { text-decoration: none; color: #58a6ff; font-weight: bold; display: block; }
+        h1 { margin-top: 50px; }
     </style>
 </head>
 <body>
-    <h1>Benvenuto nel mio archivio</h1>
-    <div class="link-box"><a href="https://drive.google.com/drive/folders/1OyT8SY4wmIts6x4OSwpdZCMyfA4aO5xr">📂 Cartella Scuola (Google Drive)</a></div>
-    <div class="link-box"><a href="https://drive.google.com/drive/folders/1OyT8SY4wmIts6x4OSwpdZCMyfA4aO5xr">📂 Cartella Lavoro (Google Drive)</a></div>
-    <div class="link-box"><a href="scuola.html">📄 Pagina Note Scuola</a></div>
+
+    <h1 class="animate__animated animate__fadeInDown">✨ Il Mio Archivio</h1>
+    <p class="animate__animated animate__fadeIn">Tutti i miei documenti in un unico posto</p>
+
+    <div class="card animate__animated animate__zoomIn" style="animation-delay: 0.2s;">
+        <a href="https://drive.google.com/drive/folders/1MZnUYAQtulbHd5E6nqfVVbGDv-94Yks3">📂 Cartella Scuola</a>
+    </div>
+
+    <div class="card animate__animated animate__zoomIn" style="animation-delay: 0.4s;">
+        <a href="https://drive.google.com/drive/folders/1j0Bket5cZ91YEoQ8LFsUpPfYMPZ6QJ8Y">💼 Progetti Lavoro</a>
+    </div>
+
+    <div class="card animate__animated animate__zoomIn" style="animation-delay: 0.6s;">
+        <a href="https://drive.google.com/drive/folders/1OyT8SY4wmIts6x4OSwpdZCMyfA4aO5xr">📸 Archivio Foto</a>
+    </div>
+
 </body>
 </html>
+
