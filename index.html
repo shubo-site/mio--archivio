@@ -3,149 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archivio Premium</title>
+    <title>Archivio Digitale di Shubo</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    
     <style>
-        :root {
-            --bg-color: #0f0a1e; /* Viola scurissimo Apple */
-            --accent-color: #9d50bb; /* Viola brillante */
-            --glass: rgba(255, 255, 255, 0.05);
+        body { 
+            text-align: center; 
+            background-color: #0d1117; 
+            color: #c9d1d9; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+        
+        h1 { margin-top: 40px; color: #58a6ff; }
+        p { color: #8b949e; margin-bottom: 40px; }
 
-        body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0f0a1e 0%, #2b1055 100%);
-            color: white;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1000px;
-            padding: 40px 0;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            letter-spacing: -1px;
-            margin-bottom: 30px;
-            background: linear-gradient(to right, #fff, #9d50bb);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Griglia delle cartelle */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
+        .container { max-width: 500px; margin: auto; }
 
         .card {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #161b22;
             padding: 25px;
-            border-radius: 20px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--accent-color);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-        }
-
-        .card i { font-size: 40px; margin-bottom: 15px; display: block; }
-
-        /* La finestra magica (Iframe) */
-        .viewer-container {
-            width: 100%;
-            height: 600px;
-            border-radius: 24px;
-            overflow: hidden;
-            display: none; /* Inizia nascosto */
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: fadeInUp 0.8s;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .back-btn {
-            display: none;
+            border-radius: 12px;
             margin-bottom: 20px;
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 50px;
-            cursor: pointer;
+            border: 1px solid #30363d;
+            transition: all 0.3s ease;
+            display: block;
+            text-decoration: none;
         }
+
+        /* Effetto quando passi il dito (Hover) */
+        .card:active, .card:hover {
+            transform: translateY(-5px);
+            border-color: #58a6ff;
+            background: #21262d;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .card h2 { margin: 0; font-size: 1.4rem; color: #f0f6fc; }
+        .icon { font-size: 2.5rem; margin-bottom: 10px; display: block; }
+        
+        .footer { margin-top: 50px; font-size: 0.8rem; color: #484f58; }
     </style>
 </head>
 <body>
 
-<div class="container animate__animated animate__fadeIn">
-    <h1>I miei Documenti</h1>
+    <div class="container">
+        <h1 class="animate__animated animate__fadeInDown">✨ Il Mio Archivio</h1>
+        <p class="animate__animated animate__fadeIn">Gestione documenti e cloud personale</p>
 
-    <button id="backBtn" class="back-btn" onclick="closeViewer()">← Torna alle cartelle</button>
+        <a href="https://drive.google.com/drive/folders/1j0Bket5cZ91YEoQ8LFsUpPfYMPZ6QJ8Y" 
+           class="card animate__animated animate__backInLeft" style="animation-delay: 0.1s;">
+            <span class="icon">💼</span>
+            <h2>Lavoro</h2>
+        </a>
 
-    <div id="folderGrid" class="grid">
-        <div class="card animate__animated animate__zoomIn" onclick="openViewer('https://drive.google.com/drive/folders/1MZnUYAQtulbHd5E6nqfVVbGDv-94Yks3')">
-            <span>📚</span>
-            <h3>Scuola</h3>
-        </div>
+        <a href="https://drive.google.com/drive/folders/1MZnUYAQtulbHd5E6nqfVVbGDv-94Yks3" 
+           class="card animate__animated animate__backInLeft" style="animation-delay: 0.3s;">
+            <span class="icon">📚</span>
+            <h2>Scuola</h2>
+        </a>
 
-        <div class="card animate__animated animate__zoomIn" style="animation-delay: 0.1s;" onclick="openViewer('https://drive.google.com/drive/folders/1j0Bket5cZ91YEoQ8LFsUpPfYMPZ6QJ8Y')">
-            <span>💼</span>
-            <h3>Lavoro</h3>
-        </div>
+        <a href="https://drive.google.com/drive/folders/1OyT8SY4wmIts6x4OSwpdZCMyfA4aO5xr" 
+           class="card animate__animated animate__backInLeft" style="animation-delay: 0.5s;">
+            <span class="icon">🏠</span>
+            <h2>Casa</h2>
+        </a>
 
-        <div class="card animate__animated animate__zoomIn" style="animation-delay: 0.2s;" onclick="openViewer('https://drive.google.com/drive/folders/1OyT8SY4wmIts6x4OSwpdZCMyfA4aO5xr')">
-            <span>🏠</span>
-            <h3>Casa</h3>
+        <div class="footer animate__animated animate__fadeIn">
+            Creato con GitHub Pages & Google Drive
         </div>
     </div>
-
-    <div id="viewer" class="viewer-container">
-        <iframe id="driveFrame" src=""></iframe>
-    </div>
-</div>
-
-<script>
-    function openViewer(link) {
-        // Questa funzione prende il link e lo mette nell'iframe
-        document.getElementById('folderGrid').style.display = 'none';
-        document.getElementById('viewer').style.display = 'block';
-        document.getElementById('backBtn').style.display = 'inline-block';
-        
-        // Trasforma il link normale in link per "embed"
-        // Google Drive ha bisogno di questo trucco
-        document.getElementById('driveFrame').src = link;
-    }
-
-    function closeViewer() {
-        document.getElementById('folderGrid').style.display = 'grid';
-        document.getElementById('viewer').style.display = 'none';
-        document.getElementById('backBtn').style.display = 'none';
-    }
-</script>
 
 </body>
 </html>
