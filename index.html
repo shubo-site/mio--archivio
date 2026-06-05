@@ -1,80 +1,137 @@
-<script>
-    // Incolla qui il link del CSV che hai ottenuto da Google Sheets
-    const sheetURL = "IL_TUO_LINK_PUBBLICATO_DA_GOOGLE_SHEETS";
-
-    async function aggiornaDatiRealTime() {
-        try {
-            const response = await fetch(sheetURL);
-            const data = await response.text();
-            const righe = data.split('\n');
-
-            // Leggiamo i valori dal foglio Google
-            const totale = righe[0].split(',')[1];
-            const risparmio = righe[1].split(',')[1];
-            const guadagno = righe[2].split(',')[1];
-            const spesa = righe[3].split(',')[1];
-
-            // Aggiorniamo la grafica del sito
-            document.querySelector('.total-amount').innerText = "€ " + totale;
-            document.querySelectorAll('.stat-val')[0].innerText = "€ " + risparmio;
-            document.querySelectorAll('.stat-val')[1].innerText = "€ " + guadagno;
-            document.querySelectorAll('.stat-val')[2].innerText = "- € " + spesa;
-        } catch (error) {
-            console.log("Errore nel caricamento dati");
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Shubo v2</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    
+    <style>
+        body { text-align: center; background-color: #0d1117; color: #c9d1d9; font-family: sans-serif; }
+        
+        /* Menu Superiore */
+        .main-nav { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
+        .nav-btn { 
+            padding: 10px 30px; cursor: pointer; border-radius: 15px; 
+            border: 2px solid #30363d; background: #161b22; color: white; font-weight: bold; 
+            transition: 0.3s;
         }
-    }
+        .nav-btn.active { border-color: #58a6ff; background: #21262d; box-shadow: 0 0 10px #58a6ff; }
 
-    // Carica i dati all'apertura
-    aggiornaDatiRealTime();
+        .section { display: none; padding: 10px; }
+        .section.active { display: block; }
 
-    function switchTab(tabId, btn) {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        btn.classList.add('active');
-    }
-
-    function mostra(link) {
-        document.getElementById('drive-viewer').src = link;
-    }
-</script>
-<script>
-    // Incolla qui il link del CSV che hai ottenuto da Google Sheets
-    const sheetURL = "IL_TUO_LINK_PUBBLICATO_DA_GOOGLE_SHEETS";
-
-    async function aggiornaDatiRealTime() {
-        try {
-            const response = await fetch(sheetURL);
-            const data = await response.text();
-            const righe = data.split('\n');
-
-            // Leggiamo i valori dal foglio Google
-            const totale = righe[0].split(',')[1];
-            const risparmio = righe[1].split(',')[1];
-            const guadagno = righe[2].split(',')[1];
-            const spesa = righe[3].split(',')[1];
-
-            // Aggiorniamo la grafica del sito
-            document.querySelector('.total-amount').innerText = "€ " + totale;
-            document.querySelectorAll('.stat-val')[0].innerText = "€ " + risparmio;
-            document.querySelectorAll('.stat-val')[1].innerText = "€ " + guadagno;
-            document.querySelectorAll('.stat-val')[2].innerText = "- € " + spesa;
-        } catch (error) {
-            console.log("Errore nel caricamento dati");
+        /* Grafica Conto */
+        .total-card { 
+            background: linear-gradient(135deg, #1f6feb 0%, #114494 100%); 
+            padding: 30px; border-radius: 20px; margin: 20px auto; max-width: 500px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
-    }
+        .total-amount { font-size: 2.8rem; font-weight: bold; color: white; }
+        
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; max-width: 500px; margin: auto; }
+        .stat-box { background: #161b22; padding: 15px; border-radius: 12px; border: 1px solid #30363d; }
+        .stat-val { font-size: 1rem; font-weight: bold; display: block; margin-top: 5px; }
+        .minus { color: #ff7b72; }
+        .plus { color: #3fb950; }
 
-    // Carica i dati all'apertura
-    aggiornaDatiRealTime();
+        /* Viewer Drive */
+        #viewer-container {
+            width: 100%; height: 500px; border: 1px solid #30363d; 
+            border-radius: 15px; overflow: hidden; background: white; margin-top: 15px;
+        }
+        iframe { width: 100%; height: 100%; border: none; }
+        
+        .btn-drive { margin: 5px; padding: 8px 15px; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
 
-    function switchTab(tabId, btn) {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        btn.classList.add('active');
-    }
+    <div class="main-nav">
+        <button class="nav-btn active" onclick="switchTab('doc', this)">DOC</button>
+        <button class="nav-btn" onclick="switchTab('conto', this)">CONTO</button>
+    </div>
 
-    function mostra(link) {
-        document.getElementById('drive-viewer').src = link;
-    }
-</script>
+    <div id="doc" class="section active animate__animated animate__fadeIn">
+        <h2>📂 I Miei Documenti</h2>
+        <div>
+            <button class="btn-drive" onclick="mostra('https://drive.google.com/embeddedfolderview?id=1j0Bket5cZ91YEoQ8LFsUpPfYMPZ6QJ8Y#list')">💼 Lavoro</button>
+            <button class="btn-drive" onclick="mostra('https://drive.google.com/embeddedfolderview?id=1MZnUYAQtulbHd5E6nqfVVbGDv-94Yks3#list')">📚 Scuola</button>
+            <button class="btn-drive" onclick="mostra('https://drive.google.com/embeddedfolderview?id=1OyT8SY4wmIts6x4OSwpdZCMyfA4aO5xr#list')">🏠 Casa</button>
+        </div>
+        <div id="viewer-container">
+            <iframe id="drive-viewer" src="https://drive.google.com/embeddedfolderview?id=1j0Bket5cZ91YEoQ8LFsUpPfYMPZ6QJ8Y#list"></iframe>
+        </div>
+    </div>
+
+    <div id="conto" class="section animate__animated animate__fadeIn">
+        <div class="total-card">
+            <span style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">BILANCIO TOTALE</span>
+            <div class="total-amount" id="val-totale">€ 0,00</div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-box">
+                <small>RISPARMIO</small>
+                <span class="stat-val" id="val-risparmio">€ 0,00</span>
+            </div>
+            <div class="stat-box">
+                <small>GUADAGNO</small>
+                <span class="stat-val plus" id="val-guadagno">€ 0,00</span>
+            </div>
+            <div class="stat-box">
+                <small>SPESA</small>
+                <span class="stat-val minus" id="val-spesa">€ 0,00</span>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px;">
+            <h3>🤖 Assistente IA</h3>
+            <textarea id="ai-input" style="width:100%; background:#161b22; color:white; border:1px dashed #58a6ff;" placeholder="Es: Ho speso 20 euro per la spesa..."></textarea>
+            <p style="font-size:0.7rem; color:#8b949e;">I dati vengono letti dal tuo Google Sheet.</p>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. INCOLLA QUI SOTTO IL TUO LINK CSV DI GOOGLE SHEETS ---
+        const sheetURL = "https://docs.google.com/spreadsheets/d/1-XSDMY6x9WAp1qps5DMHM--a1SsrPmUZ_uW5VH5TIwY/edit?usp=drivesdk";
+        // -------------------------------------------------------------
+
+        async function aggiornaConto() {
+            if (sheetURL.includes("INSERISCI")) return;
+            try {
+                const response = await fetch(sheetURL);
+                const data = await response.text();
+                const righe = data.split('\n');
+
+                // Mappa i valori dal foglio (A=Nome, B=Valore)
+                document.getElementById('val-totale').innerText = "€ " + righe[0].split(',')[1].trim();
+                document.getElementById('val-risparmio').innerText = "€ " + righe[1].split(',')[1].trim();
+                document.getElementById('val-guadagno').innerText = "€ " + righe[2].split(',')[1].trim();
+                document.getElementById('val-spesa').innerText = "- € " + righe[3].split(',')[1].trim();
+            } catch (err) {
+                console.error("Errore nel caricamento del foglio Google.");
+            }
+        }
+
+        // Funzione per cambiare Tab
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+            if(tabId === 'conto') aggiornaConto();
+        }
+
+        // Funzione per cambiare cartella Drive
+        function mostra(link) {
+            document.getElementById('drive-viewer').src = link;
+        }
+
+        // Avvio automatico
+        aggiornaConto();
+    </script>
+</body>
+</html>
