@@ -3,77 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archivio Digitale di Shubo</title>
-    
+    <title>Archivio Integrato Shubo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
     
     <style>
-        body { 
-            text-align: center; 
-            background-color: #0d1117; 
-            color: #c9d1d9; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        body { text-align: center; background-color: #0d1117; color: #c9d1d9; }
+        .menu-canali { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .btn-archivio { 
+            padding: 10px 20px; background: #161b22; border: 1px solid #30363d; 
+            border-radius: 8px; color: white; cursor: pointer; transition: 0.3s;
         }
+        .btn-archivio:hover { border-color: #58a6ff; background: #21262d; }
         
-        h1 { margin-top: 40px; color: #58a6ff; }
-        p { color: #8b949e; margin-bottom: 40px; }
-
-        .container { max-width: 500px; margin: auto; }
-
-        .card {
-            background: #161b22;
-            padding: 25px;
+        /* Contenitore per i file di Drive */
+        #viewer-container {
+            width: 100%;
+            height: 600px;
+            border: 2px solid #30363d;
             border-radius: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #30363d;
-            transition: all 0.3s ease;
-            display: block;
-            text-decoration: none;
+            overflow: hidden;
+            background: white; /* Per vedere meglio i documenti */
         }
-
-        /* Effetto quando passi il dito (Hover) */
-        .card:active, .card:hover {
-            transform: translateY(-5px);
-            border-color: #58a6ff;
-            background: #21262d;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        }
-
-        .card h2 { margin: 0; font-size: 1.4rem; color: #f0f6fc; }
-        .icon { font-size: 2.5rem; margin-bottom: 10px; display: block; }
-        
-        .footer { margin-top: 50px; font-size: 0.8rem; color: #484f58; }
+        iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1 class="animate__animated animate__fadeInDown">✨ Il Mio Archivio</h1>
-        <p class="animate__animated animate__fadeIn">Gestione documenti e cloud personale</p>
+    <h1 class="animate__animated animate__fadeInDown">✨ Il Mio Cloud Privato</h1>
+    <p>Seleziona una cartella per visualizzare i file qui sotto</p>
 
-        <a href="https://drive.google.com/drive/folders/1j0Bket5cZ91YEoQ8LFsUpPfYMPZ6QJ8Y" 
-           class="card animate__animated animate__backInLeft" style="animation-delay: 0.1s;">
-            <span class="icon">💼</span>
-            <h2>Lavoro</h2>
-        </a>
-
-        <a href="https://drive.google.com/drive/folders/1MZnUYAQtulbHd5E6nqfVVbGDv-94Yks3" 
-           class="card animate__animated animate__backInLeft" style="animation-delay: 0.3s;">
-            <span class="icon">📚</span>
-            <h2>Scuola</h2>
-        </a>
-
-        <a href="https://drive.google.com/drive/folders/1OyT8SY4wmIts6x4OSwpdZCMyfA4aO5xr" 
-           class="card animate__animated animate__backInLeft" style="animation-delay: 0.5s;">
-            <span class="icon">🏠</span>
-            <h2>Casa</h2>
-        </a>
-
-        <div class="footer animate__animated animate__fadeIn">
-            Creato con GitHub Pages & Google Drive
-        </div>
+    <div class="menu-canali animate__animated animate__fadeIn">
+        <button class="btn-archivio" onclick="mostra('https://drive.google.com/embeddedfolderview?id=1j0Bket5cZ91YEoQ8LFsUpPfYMPZ6QJ8Y#list')">💼 Lavoro</button>
+        <button class="btn-archivio" onclick="mostra('https://drive.google.com/embeddedfolderview?id=1MZnUYAQtulbHd5E6nqfVVbGDv-94Yks3#list')">📚 Scuola</button>
+        <button class="btn-archivio" onclick="mostra('https://drive.google.com/embeddedfolderview?id=1OyT8SY4wmIts6x4OSwpdZCMyfA4aO5xr#list')">🏠 Casa</button>
     </div>
+
+    <div id="viewer-container" class="animate__animated animate__zoomIn">
+        <iframe id="drive-viewer" src="https://drive.google.com/embeddedfolderview?id=1j0Bket5cZ91YEoQ8LFsUpPfYMPZ6QJ8Y#list"></iframe>
+    </div>
+
+    <script>
+        function mostra(link) {
+            document.getElementById('drive-viewer').src = link;
+        }
+    </script>
 
 </body>
 </html>
